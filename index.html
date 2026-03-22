@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 PIKATILFLAY Bet - Simulador Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c0c1a 0%, #1a1a2e 50%, #16213e 100%);
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px #ff6b6b); }
+            to { filter: drop-shadow(0 0 30px #4ecdc4); }
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .saldo-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .saldo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+
+        .saldo-icon {
+            font-size: 2rem;
+            color: #4ade80;
+            margin-bottom: 15px;
+        }
+
+        .saldo-label {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .saldo-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4ade80;
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 1.2rem;
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-field::placeholder {
+            color: #a0a0a0;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #4ade80;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-apostar {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #4ade80, #22c55e);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.4);
+        }
+
+        .btn-apostar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(74, 222, 128, 0.6);
+        }
+
+        .btn-apostar:active {
+            transform: translateY(-1px);
+        }
+
+        .resultado {
+            min-height: 80px;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .resultado.vitoria {
+            background: linear-gradient(45deg, rgba(74, 222, 128, 0.3), rgba(34, 197, 94, 0.2));
+            border: 2px solid #4ade80;
+            color: #4ade80;
+            animation: celebrate 0.6s ease-in-out;
+        }
+
+        .resultado.derrota {
+            background: linear-gradient(45deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.2));
+            border: 2px solid #ef4444;
+            color: #ef4444;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .saldo-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="logo">🎰 PIKATILFLAY BET</h1>
+            <p class="subtitle">Simulador Premium</p>
+        </div>
+
+        <div class="saldo-card">
+            <div class="saldo-icon">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="saldo-label">Saldo Atual</div>
+            <div class="saldo-value" id="saldo">R$ 10.000,00</div>
+        </div>
+
+        <div class="input-group">
+            <input type="number" id="aposta" class="input-field" placeholder="💰 Digite o valor da aposta" min="1">
+        </div>
+
+        <button class="btn-apostar" onclick="apostar()">
+            <i class="fas fa-dice"></i> ROLAR OS DADOS
+        </button>
+
+        <div id="resultado" class="resultado"></div>
+    </div>
+
+    <script>
+        let saldo = 10000;
+        let saldoFormatado = saldo.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+
+        function formatarSaldo(valor) {
+            return valor.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2
+            });
+        }
+
+        function criarParticulas(tipo) {
+            const particles = document.getElementById('particles');
+            const particleCount = tipo === 'vitoria' ? 50 : 30;
+            const colors = tipo === 'vitoria' 
+                ? ['#4ade80', '#22c55e', '#86efac'] 
+                : ['#ef4444', '#dc2626', '#f87171'];
+
+            for (let i = 0; i < particleCount; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.style.cssText = `
+                        position: fixed;
+                        width: 8px;
+                        height: 8px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        border-radius: 50%;
+                        pointer-events: none;
+                        left: ${Math.random() * 100}vw;
+                        top: 100vh;
+                        animation: particle-fall 2s linear forwards;
+                        z-index: 1000;
+                    `;
+                    particles.appendChild(particle);
+
+                    setTimeout(() => particle.remove(), 2000);
+                }, i * 20);
+            }
+        }
+
+        function apostar() {
+            const valorInput = document.getElementById("aposta");
+            const resultado = document.getElementById("resultado");
+            let valor = parseInt(valorInput.value.replace(/\D/g, ''));
+
+            if (!valor || valor <= 0 || valor > saldo) {
+                resultado.textContent = "❌ Valor inválido!";
+                resultado.className = "resultado";
+                return;
+            }
+
+            valorInput.value = '';
+
+            const ganhou = Math.random() < 0.5;
+            resultado.className = "resultado";
+
+            if (ganhou) {
+                saldo += valor;
+                resultado.innerHTML = "🎉 <strong>PARABÉNS AE!</strong>";
+                resultado.classList.add("vitoria");
+                criarParticulas('vitoria');
+            } else {
+                saldo -= valor;
+                resultado.innerHTML = "💥 <strong>SSSEEE FUDDEEUUU!</strong> AKAKAKAKAKA ";
+                resultado.classList.add("derrota");
+                criarParticulas('derrota');
+            }
+
+            document.getElementById("saldo").textContent = formatarSaldo(saldo);
+
+            // Reset resultado após 4 segundos
+            setTimeout(() => {
+                resultado.textContent = "";
+                resultado.className = "resultado";
+            }, 4000);
+        }
+
+        // Enter para apostar
+        document.getElementById("aposta").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                apostar();
+            }
+        });
+
+        // Formatar input de valor em tempo real
+        document.getElementById("aposta").addEventListener("input", function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            e.target.value = value ? parseInt(value).toLocaleString('pt-BR') : '';
+        });
+    </script>
+</body>
+</html>
